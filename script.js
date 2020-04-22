@@ -7,13 +7,16 @@ var timerEl = document.querySelector("#timer");
 var quizEl = document.querySelector("#quiz");
 var finishEl = document.querySelector("#finish");
 var finalScoreEl = document.querySelector("#final-score");
-var highscoreInput = document.querySelector("#highscoreInput")
-var highscoreForm = document.querySelector("#highscore-entry")
-var highscoreEl = document.querySelector("#highscore")
-var highscoreTable = document.querySelector("#highscore-table")
+var highscoreInput = document.querySelector("#highscoreInput");
+var highscoreForm = document.querySelector("#highscore-entry");
+var highscoreEl = document.querySelector("#highscore");
+var highscoreTable = document.querySelector("#highscore-table");
+var noScoreText = document.querySelector("#no-new-score");
+var clearBtn = document.querySelector("#clear-highscores")
+var backBtn = document.querySelector("#go-back")
+var againBtn = document.querySelector("#play-again")
 
 var currentQuestion = 0;
-var score;
 var timeLeft = 75;
 var timerInterval;
 
@@ -64,8 +67,7 @@ var storedHighscores = JSON.parse(localStorage.getItem("highscores"));
 
 if (storedHighscores !== null) {
     highscores = storedHighscores;
-  }
-
+};
 
 function renderQuestion() {
     // Clear the list element
@@ -107,6 +109,16 @@ function finishQuiz() {
     verdictText.textContent = "";
     finishEl.style.display = "block";
     finalScoreEl.textContent = "Your final score is " + timeLeft;
+    // Ensure only the top 10 highscores are being saved
+    if ((highscores.length - 1) > 10) {
+        highscores.splice(9);
+        localStorage.setItem("highscores", JSON.stringify(highscores));
+    };
+    // Determine if a highscore was set
+    if (highscores.length === 0 || highscores[highscores.length - 1].score < timeLeft) {
+        highscoreForm.style.display = "block";
+        noScoreText.style.display = "none";
+    }
 };
 
 function renderHighscores() {
@@ -116,11 +128,18 @@ function renderHighscores() {
     timerEl.textContent = "";
     questionText.textContent = "";
     answerList.innerHTML = "";
-    
+
+    // Clear the table to prevent duplicate listings
+    for (var i = 0; i < highscores.length; i++) {
+        highscoreTable.deleteRow(-1);
+    }
     // Generate the table
     highscoreEl.style.display = "block";
     if (highscores.length > 0) {
         document.querySelector("#no-highscores").style.display = "none";
+    }
+    else {
+        highscoreTable.style.display = "none";
     }
     for (var i = 0; i < highscores.length && i < 10; i++) {
         var row = highscoreTable.insertRow(-1);
@@ -132,6 +151,17 @@ function renderHighscores() {
     }
 
 };
+
+function quizReset () {
+    // Reset game variables
+    currentQuestion = 0;
+    timeLeft = 75;
+    // Reset the screen
+    timerEl.style.display = "block";
+    welcomeEl.style.display = "block";
+    finishEl.style.display = "none";
+    highscoreEl.style.display = "none";
+}
 
 // When the start button is clicked, start the quiz
 startBtn.addEventListener("click", function () {
@@ -168,7 +198,7 @@ answerList.addEventListener("click", function (event) {
 });
 
 // When highscore submit button is clicked
-highscoreForm.addEventListener("submit", function(event) {
+highscoreForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
     var highscoreName = highscoreInput.value.trim();
@@ -179,10 +209,10 @@ highscoreForm.addEventListener("submit", function(event) {
     // Add name and score to highscores
     highscores.push({
         name: highscoreName,
-        score: timeLeft        
+        score: timeLeft
     })
     // Sort highscores by highest score
-    highscores.sort(function(a, b){
+    highscores.sort(function (a, b) {
         return b.score - a.score;
     });
     highscoreInput.value = "";
@@ -191,3 +221,14 @@ highscoreForm.addEventListener("submit", function(event) {
     // Render the highscore table
     renderHighscores();
 })
+
+// Clear Highscores
+clearBtn.addEventListener("click", function(){
+    highscores = [];
+    localStorage.setItem("highscores", JSON.stringify(highscores));
+    document.querySelector("#no-highscores").style.display = "block";
+    renderHighscores();
+})
+
+backBtn.addEventListener("click", quizReset);
+againBtn.addEventListener("click", quizReset);
