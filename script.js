@@ -1,11 +1,14 @@
 var questionText = document.querySelector("#question");
 var answerList = document.querySelector("#answers");
 var verdictText = document.querySelector("#verdict");
+var startBtn = document.querySelector("#start-button");
+var welcomeEl = document.querySelector("#welcome");
+var timerEl = document.querySelector("#timer");
 
 var currentQuestion = 0;
 var score;
 var timeLeft = 75;
-
+var timerInterval;
 
 var quiz = [
     {
@@ -65,7 +68,34 @@ function renderQuestion() {
     }
 };
 
-renderQuestion();
+function startTimer() {
+    timerEl.textContent = "Time: " + timeLeft;
+    timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+    timeLeft--;
+    timerEl.textContent = "Time: " + timeLeft;
+
+    if (timeLeft === 0) {
+        finishQuiz();
+    }
+}
+
+function finishQuiz() {
+    clearInterval(timerInterval);
+    timerEl.textContent = "";
+    questionText.textContent = "Finished!";
+    answerList.innerHTML = "";
+    verdictText.textContent = "";
+}
+
+// When the start button is clicked, start the quiz
+startBtn.addEventListener("click", function () {
+    welcomeEl.innerHTML = "";
+    renderQuestion();
+    startTimer();
+});
 
 // When the answer button is clicked
 answerList.addEventListener("click", function (event) {
@@ -88,9 +118,7 @@ answerList.addEventListener("click", function (event) {
         }
         else {
             // Finish the quiz
-            questionText.textContent = "Finished!"
-            answerList.innerHTML = "";
-            verdictText.textContent = "";
+            finishQuiz();
         }
     }
 });
