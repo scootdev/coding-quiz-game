@@ -1,8 +1,68 @@
-#finish, #highscore, #highscore-entry {
-    display: none;
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+#finish,
+#highscore,
+#highscore-entry {
+  display: none;
 }
 
 #container {
-    width: 50%;
-    margin: 0 auto;
+  width: 50%;
+  margin: 0 auto;
+}
+
+button,
+.button {
+  background-color: rgb(5, 125, 129);
+  border: none;
+  color: white;
+  border-radius: 12px;
+  padding: 5px 32px;
+  margin: 5px 0;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#verdict {
+  color: grey;
+  margin: 5px;
+}
+
+#view-highscores {
+  float: left;
+}
+
+#timer {
+  float: right;
+}
+
+header {
+  font-weight: bold;
+  padding: 1%;
+  margin-bottom: 10%;
+  color: rgb(5, 125, 129);
+}
+
+thead {
+  font-weight: bold;
+}
+th, td {
+  border-bottom: 1px solid #ddd;
+  width: 100%;
+  text-align: left;
+}
+
+th {
+  background-color: rgb(5, 125, 129);
+  color: white;
 }

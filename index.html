@@ -4,12 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Javascript Quiz</title>
 </head>
 
 <body>
     <header>
+        <p id="view-highscores">View Highscores</p>
         <p id="timer">Time: 0</p>
     </header>
     <div id="container">
@@ -25,7 +27,7 @@
             <form id="highscore-entry">
                 <label for="highscoreInput">Enter your name:</label>
                 <input type="text" id="highscoreInput" name="name" placeholder="Your name">
-                <input type="submit" value="submit">
+                <input class="button" type="submit" value="submit">
             </form>
             <button id="play-again">Play Again!</button>
         </div>
@@ -41,11 +43,14 @@
         <div id="highscore">
             <h1>Highscores</h1>
             <p id="no-highscores">No highscores to display</p>
-            <table id="highscore-table">
+            <table id="table-head">
                 <tr>
                     <th>Name</th>
                     <th>Score</th>
                 </tr>
+            </table>
+            <table id="highscore-table">
+
             </table>
             <button id="go-back">Go Back</button>
             <button id="clear-highscores">Clear Highscores</button>

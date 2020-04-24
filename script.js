@@ -11,10 +11,12 @@ var highscoreInput = document.querySelector("#highscoreInput");
 var highscoreForm = document.querySelector("#highscore-entry");
 var highscoreEl = document.querySelector("#highscore");
 var highscoreTable = document.querySelector("#highscore-table");
+var tableHead = document.querySelector("#table-head");
 var noScoreText = document.querySelector("#no-new-score");
-var clearBtn = document.querySelector("#clear-highscores")
-var backBtn = document.querySelector("#go-back")
-var againBtn = document.querySelector("#play-again")
+var clearBtn = document.querySelector("#clear-highscores");
+var backBtn = document.querySelector("#go-back");
+var againBtn = document.querySelector("#play-again");
+var viewHighscores = document.querySelector("#view-highscores");
 
 var currentQuestion = 0;
 var timeLeft = 75;
@@ -23,41 +25,57 @@ var timerInterval;
 // Quiz questions
 var quiz = [
     {
-        question: "Question 1",
+        question: "Inside which HTML element do we put the JavaScript?",
         answers:
-            ["Wrong",
-                "Right",
-                "Wrong",
-                "Wrong"],
-        correct: "Right"
+            ["<js></js>",
+                "<javascript></javascript>",
+                "<script></script>",
+                "<scripting></scripting>"],
+        correct: "<script></script>"
     },
     {
-        question: "Question 2",
+        question: 'How do you write "Hello World" in an alert box?',
         answers:
-            ["Wrong",
-                "Right",
-                "Wrong",
-                "Wrong"],
-        correct: "Right"
+            ['alert("Hello World");',
+                'alertBox("Hello World");',
+                'msg("Hello World");',
+                'msgBox("Hello World");'],
+        correct: 'alert("Hello World");'
     },
     {
-        question: "Question 3",
+        question: "The external JavaScript file must contain the <script> tag.",
         answers:
-            ["Wrong",
-                "Right",
-                "Wrong",
-                "Wrong"],
-        correct: "Wrong"
+            ["True",
+                "False",],
+        correct: "True"
     },
     {
-        question: "Question 4",
+        question: "How do you create a function in JavaScript?",
         answers:
-            ["Wrong",
-                "Right",
-                "Wrong",
-                "Wrong"],
-        correct: "Right"
+            ["function = myFunction()",
+                "function:myFunction()",
+                "function myFunction()",],
+        correct: "function myFunction()"
     },
+    {
+        question: "How do you write an IF statement in JavaScript?",
+        answers:
+            ["if i = 5 then",
+                "if i == 5 then",
+                "if i = 5",
+                "if (i == 5)"],
+        correct: "if (i == 5)"
+    },
+    {
+        question: "How does a FOR loop start?",
+        answers:
+            ["for (i = 0; i <= 5; i++)",
+                "for i = 1 to 5",
+                "for (i <= 5; i++)",
+                "for (i = 0; i <= 5)"],
+        correct: "for (i = 0; i <= 5; i++)"
+    },
+
 
 ];
 
@@ -115,7 +133,7 @@ function finishQuiz() {
         localStorage.setItem("highscores", JSON.stringify(highscores));
     };
     // Determine if a highscore was set
-    if (highscores.length === 0 || highscores[highscores.length - 1].score < timeLeft) {
+    if (highscores.length < 10 || highscores[highscores.length - 1].score < timeLeft) {
         highscoreForm.style.display = "block";
         noScoreText.style.display = "none";
     }
@@ -128,6 +146,7 @@ function renderHighscores() {
     timerEl.textContent = "";
     questionText.textContent = "";
     answerList.innerHTML = "";
+    
 
     // Clear the table to prevent duplicate listings
     for (var i = 0; i < highscores.length; i++) {
@@ -135,11 +154,14 @@ function renderHighscores() {
     }
     // Generate the table
     highscoreEl.style.display = "block";
+    highscoreTable.style.display = "block";
+    tableHead.style.display = "block";
     if (highscores.length > 0) {
         document.querySelector("#no-highscores").style.display = "none";
     }
     else {
         highscoreTable.style.display = "none";
+        tableHead.style.display = "none";
     }
     for (var i = 0; i < highscores.length && i < 10; i++) {
         var row = highscoreTable.insertRow(-1);
@@ -152,7 +174,7 @@ function renderHighscores() {
 
 };
 
-function quizReset () {
+function quizReset() {
     // Reset game variables
     currentQuestion = 0;
     timeLeft = 75;
@@ -220,15 +242,16 @@ highscoreForm.addEventListener("submit", function (event) {
     localStorage.setItem("highscores", JSON.stringify(highscores));
     // Render the highscore table
     renderHighscores();
-})
+});
 
 // Clear Highscores
-clearBtn.addEventListener("click", function(){
+clearBtn.addEventListener("click", function () {
     highscores = [];
     localStorage.setItem("highscores", JSON.stringify(highscores));
     document.querySelector("#no-highscores").style.display = "block";
     renderHighscores();
-})
+});
 
 backBtn.addEventListener("click", quizReset);
 againBtn.addEventListener("click", quizReset);
+viewHighscores.addEventListener("click", renderHighscores);
