@@ -66,3 +66,7 @@ th {
   background-color: rgb(5, 125, 129);
   color: white;
 }
+
+button:hover, .button:hover {
+  background-color: rgb(144, 205, 207);
+}
